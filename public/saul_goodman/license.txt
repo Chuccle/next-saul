@@ -1,0 +1,11 @@
+Model Information:
+* title:	Saul Goodman
+* source:	https://sketchfab.com/3d-models/saul-goodman-2873b0cd7b2c41069513d6074d4df0a5
+* author:	ko6i3models (https://sketchfab.com/ko6i3models)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Saul Goodman" (https://sketchfab.com/3d-models/saul-goodman-2873b0cd7b2c41069513d6074d4df0a5) by ko6i3models (https://sketchfab.com/ko6i3models) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

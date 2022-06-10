@@ -1,0 +1,11 @@
+Model Information:
+* title:	thelogo
+* source:	https://sketchfab.com/3d-models/thelogo-9f47fecd6f5646b087a118286ca09bf1
+* author:	charlie11cohen (https://sketchfab.com/charlie11cohen)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "thelogo" (https://sketchfab.com/3d-models/thelogo-9f47fecd6f5646b087a118286ca09bf1) by charlie11cohen (https://sketchfab.com/charlie11cohen) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
