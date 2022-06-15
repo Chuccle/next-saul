@@ -2,13 +2,13 @@
 import * as THREE from 'three'
 import styles from '/styles/Home.module.css'
 import React, { useRef } from 'react'
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader, useThree,  } from '@react-three/fiber'
 import { Suspense } from "react";
-import { TextureLoader } from 'three'
-import { Text, Loader, PerspectiveCamera, OrbitControls } from '@react-three/drei'
+import { Color, TextureLoader } from 'three'
+import { Text, Loader, PerspectiveCamera, OrbitControls, CameraShake } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-
-
+import { EffectComposer, Bloom } from '@react-three/postprocessing';
+import { KernelSize } from 'postprocessing'
 
 
 React.useLayoutEffect = React.useEffect
@@ -24,16 +24,16 @@ function ResponsiveCamera() {
 
   switch (true) {
 
-    case context.viewport.aspect < 0.5:
+    case context.viewport.aspect < 0.7:
 
       //     --> broken   context.camera.fov = 110
 
-      fov.current = 110
+      fov.current = 120
 
       break;
 
 
-    case context.viewport.aspect < 0.6:
+    case context.viewport.aspect < 0.8:
 
       //    --> broken    context.camera.fov = 100
 
@@ -42,7 +42,7 @@ function ResponsiveCamera() {
 
       break;
 
-    case context.viewport.aspect < 0.7:
+    case context.viewport.aspect < 0.9:
 
       //    --> broken  context.camera.fov = 90
 
@@ -100,25 +100,26 @@ function ExeterCollegeLogo() {
 
   const logo = useLoader(GLTFLoader, '/thelogo/scene.gltf');
 
-  //  var orbitRadius = 1.8; //distance from the origin 
+  // var orbitRadius = 1.8; //distance from the origin 
 
-  var incrementer
+  // var incrementer; //incrementer for the orbit
 
 
   useFrame(state => {
 
     // this will always have a set value of 0 meaning initial start position will be math.cos(0) * 2  and math.sin(0) * 2 == x:2, y:0, z:0 initial orbit position
-    incrementer = state.clock.getElapsedTime() / 5
+    // incrementer = state.clock.getElapsedTime() / 5
 
     if (mesh.current?.rotation && mesh.current?.position) {
 
       mesh.current.rotation.y += 0.005
 
-      //  mesh.current.position.set(
-      //    Math.cos(incrementer) * orbitRadius,
-      //   0,
-      //    Math.sin(incrementer) * orbitRadius
-      //   )
+     
+        // mesh.current.position.set(
+        //  Math.cos(incrementer) * orbitRadius,
+        // 0,
+        //   Math.sin(incrementer) * orbitRadius
+        //  )
 
 
     }
@@ -135,17 +136,70 @@ function ExeterCollegeLogo() {
 
 function Background({ url }: { url: string }): JSX.Element {
 
+  const mesh = useRef<THREE.Mesh>(null)
+  const mesh2 = useRef<THREE.Mesh>(null)
+  const mesh3 = useRef<THREE.Mesh>(null)
   const texture = useLoader(TextureLoader, url);
+ 
+  var orbitRadius = 0.6; //distance from the origin 
+
+  var incrementer; //incrementer for the orbit
+
+
+
+
+  useFrame(state => {
+
+    // this will always have a set value of 0 meaning initial start position will be math.cos(0) * 2  and math.sin(0) * 2 == x:2, y:0, z:0 initial orbit position
+    incrementer = state.clock.getElapsedTime() / 5
+
+    if (mesh.current?.rotation && mesh.current?.position) {
+
+
+        mesh.current.position.set(
+         Math.cos(incrementer) * orbitRadius,
+         Math.tan(incrementer) * orbitRadius,
+          Math.sin(incrementer) * orbitRadius
+         )
+
+
+    }
+
+
+  })
+
+
+  useFrame(state => {
+
+    
+
+    // this will always have a set value of 0 meaning initial start position will be math.cos(0) * 2  and math.sin(0) * 2 == x:2, y:0, z:0 initial orbit position
+    incrementer = 5 + state.clock.getElapsedTime() / 5
+
+    if (mesh2.current?.rotation && mesh2.current?.position) {
+
+
+        mesh2.current.position.set(
+         Math.cos(incrementer) * orbitRadius,
+         Math.tan(incrementer) * orbitRadius,
+          Math.sin(incrementer) * orbitRadius
+         )
+				}
+
+       
+
+  })
+
 
 
 
 
   return (
 
-    <mesh position={[0.0, 0.0, 0.0]}  >
-      <Text outlineColor="white" outlineWidth={0.005} color="black" position={[0, 0, 0.5]} rotation={[0, 0, 0]} scale={[1, 1, 3]} anchorX="center" anchorY="middle" font="/fonts/Roboto-Black-webfont.woff">Exeter college</Text>
-      <Text outlineColor="white" outlineWidth={0.005} color="black" position={[0, -0.1, 0.5]} rotation={[0, 0, 0]} scale={[1, 1, 3]} anchorX="center" anchorY="middle" font="/fonts/Roboto-Black-webfont.woff">e-sports</Text>
-      <boxBufferGeometry args={[100, 100, 100]} attach="geometry" />
+    <mesh ref={mesh3} position={[0.0, 0.0, 0.0]}  >
+      <Text depthOffset={12} ref={mesh} outlineColor="white" outlineWidth={0.005} color="black" position={[0, 0, 0.5]} rotation={[0, 0, 0]} scale={[1, 1, 3]} anchorX="center" anchorY="middle" font="/fonts/Roboto-Black-webfont.woff">Exeter college</Text>
+      <Text ref={mesh2} outlineColor="white" outlineWidth={0.005} color="black" position={[0, -0.1, 0.5]} rotation={[0, 0, 0]} scale={[1, 1, 3]} anchorX="center" anchorY="middle" font="/fonts/Roboto-Black-webfont.woff">e-sports</Text>
+      <boxBufferGeometry  args={[100, 100, 100]} attach="geometry" />
       <meshBasicMaterial side={2} map={texture} attach="material" />
     </mesh>
   )
@@ -172,10 +226,15 @@ export default function App(): JSX.Element {
           <OrbitControls />
           <directionalLight position={[0, 0, 1]} intensity={1} />
           <Background url={'Model_Textures/galaxy_starfield.png'} />
+          <EffectComposer multisampling={8}>
+          <Bloom kernelSize={3} luminanceThreshold={0} luminanceSmoothing={0.4} intensity={0.6} />
+          <Bloom kernelSize={KernelSize.HUGE} luminanceThreshold={0} luminanceSmoothing={0} intensity={0.5} />
+        </EffectComposer>
           <Saul />
           <ExeterCollegeLogo />
 
         </Suspense>
+        <CameraShake yawFrequency={0.2} pitchFrequency={0.2} rollFrequency={0.2} />
       </Canvas>
       <Loader />
 
